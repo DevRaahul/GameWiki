@@ -1,0 +1,43 @@
+<div class="filters">
+    <mat-form-field>
+        <mat-label>Sort By:</mat-label>
+        <mat-select panelClass="sort-select" [(ngModel)]="sort" (selectionChange)="searchGame(sort)">
+            <mat-option value="name">Name</mat-option>
+            <mat-option value="-released">Released</mat-option>
+            <mat-option value="-added">Added</mat-option>
+            <mat-option value="-created">Created</mat-option>
+            <mat-option value="-updated">Updated</mat-option>
+            <mat-option value="-rating">Rating</mat-option>
+            <mat-option value="-metacritic">metacritic</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+<div *ngIf="loading; else loaded" class="flex-container">
+    <img src="../../../assets/images/platforms/Rolling-1s-200px.gif" alt="loader" style="background-color: black;">
+</div>
+<ng-template #loaded>
+    <div class="games">
+        <ng-container *ngFor="let item of games">
+            <div class="game" (click)="openDetails(item)">
+                <div class="game-img-container">
+                    <img *ngIf="item.background_image" src={{item.background_image}} alt="thumbnail" class="game-img">
+                    <p *ngIf="!item.background_image">No Image</p>
+                </div>
+                <div class="game-details">
+                    <p class="name" *ngIf="item.name">{{item.name}}</p>
+                    <p class="name" *ngIf="!item.name">No Name</p>
+
+                    <div class="platforms">
+                        <ng-container *ngFor="let obj of item.parent_platforms">
+                            <img src="../../../assets/images/platforms/{{ obj.platform.slug }}.svg"
+                                alt="{{obj.platform.name}}" class="platforms-icons">
+                        </ng-container>
+
+                    </div>
+
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
